@@ -45,7 +45,7 @@ public class Utils
         
         final String userHome = System.getProperty("user.home", ".");
         File workingDirectory;
-        switch (Utils.OS.values()[getPlatform().ordinal()])
+        switch (SystemUtils.OS.values()[SystemUtils.getSystemOS().ordinal()])
         {
             case linux:
             case solaris:
@@ -65,7 +65,7 @@ public class Utils
                             '.' + applicationName + '/');
                 }
                 break;
-            case macos:
+            case macosx:
                 workingDirectory = new File(userHome,
                         "Library/Application Support/" + applicationName);
                 break;
@@ -203,40 +203,5 @@ public class Utils
         {
             System.out.println("Failed to open link " + uri.toString());
         }
-    }
-    
-    public static OS getPlatform()
-    {
-        final String osName = System.getProperty("os.name").toLowerCase();
-        if (osName.contains("win"))
-        {
-            return OS.windows;
-        }
-        if (osName.contains("mac"))
-        {
-            return OS.macos;
-        }
-        if (osName.contains("solaris"))
-        {
-            return OS.solaris;
-        }
-        if (osName.contains("sunos"))
-        {
-            return OS.solaris;
-        }
-        if (osName.contains("linux"))
-        {
-            return OS.linux;
-        }
-        if (osName.contains("unix"))
-        {
-            return OS.linux;
-        }
-        return OS.unknown;
-    }
-    
-    public static enum OS
-    {
-        linux, solaris, windows, macos, unknown;
     }
 }

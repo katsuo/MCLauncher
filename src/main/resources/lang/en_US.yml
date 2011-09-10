@@ -19,6 +19,14 @@ options:
   gameLocationLabel: "Game location on disk"
   profiles: "Profiles"
   done: "Done"
+  offlineMode: "Offline Mode"
+  onlineMode: "Online Mode"
+  httpMode: "HTTP Login"
+  httpsMode: "HTTPS Login"
+profiles:
+  add: "Add"
+  edit: "Edit"
+  remove: "Remove"
 updater:
   retrieving: "Retrieving"
   extracting: "Extracting"

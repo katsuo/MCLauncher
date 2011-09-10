@@ -23,8 +23,8 @@ import com.kokakiwi.mclauncher.LauncherFrame;
 import com.kokakiwi.mclauncher.utils.MCLogger;
 import com.kokakiwi.mclauncher.utils.State;
 import com.kokakiwi.mclauncher.utils.java.DownloadThread;
+import com.kokakiwi.mclauncher.utils.java.SystemUtils;
 import com.kokakiwi.mclauncher.utils.java.Utils;
-import com.kokakiwi.mclauncher.utils.java.Utils.OS;
 import com.kokakiwi.mclauncher.utils.java.Version;
 
 public class GameUpdater implements Runnable
@@ -75,13 +75,13 @@ public class GameUpdater implements Runnable
             
             final String latestVersion = launcherFrame.getConfig().getString(
                     "latestVersion");
-            File versionFile = new File(dir, "version");
+            final File versionFile = new File(dir, "version");
             if (latestVersion != null)
             {
                 if (versionFile.exists())
                 {
-                    if (!latestVersion.equals(readVersionFile(versionFile))
-                            || latestVersion.equals("-1"))
+                    if ((!latestVersion.equals(readVersionFile(versionFile))
+                            || latestVersion.equals("-1")) && !launcherFrame.getConfig().getBoolean("launcher.offlineMode"))
                     {
                         MCLogger.info("Update available for Base game. New version : "
                                 + latestVersion);
@@ -98,20 +98,20 @@ public class GameUpdater implements Runnable
                 }
             }
             
-            boolean useCustomVersion = launcherFrame.getConfig().getBoolean(
-                    "updater.customVersion.use");
+            final boolean useCustomVersion = launcherFrame.getConfig()
+                    .getBoolean("updater.customVersion.use");
             Version latestCustomVersion = new Version();
             if (useCustomVersion)
             {
                 latestCustomVersion = Version.parseString(Utils.executePost(
                         launcherFrame.getConfig().getString(
                                 "updater.customVersion.checkUrl"), "", ""));
-                File customVersionFile = new File(dir, launcherFrame
+                final File customVersionFile = new File(dir, launcherFrame
                         .getConfig()
                         .getString("updater.customVersion.fileName"));
                 if (customVersionFile.exists())
                 {
-                    Version currentVersion = Version
+                    final Version currentVersion = Version
                             .parseString(readVersionFile(customVersionFile));
                     if (latestCustomVersion.compareTo(currentVersion) > 0)
                     {
@@ -150,7 +150,7 @@ public class GameUpdater implements Runnable
                         : latestVersion);
                 if (useCustomVersion)
                 {
-                    File customVersionFile = new File(dir, launcherFrame
+                    final File customVersionFile = new File(dir, launcherFrame
                             .getConfig().getString(
                                     "updater.customVersion.fileName"));
                     writeVersionFile(customVersionFile,
@@ -202,10 +202,10 @@ public class GameUpdater implements Runnable
     
     private void loadNativeUrl() throws Exception
     {
-        final Utils.OS osName = Utils.getPlatform();
+        final SystemUtils.OS osName = SystemUtils.getSystemOS();
         String nativeJar = null;
         
-        if (osName == OS.unknown)
+        if (osName == SystemUtils.OS.unknown)
         {
             fatalErrorOccured("OS (" + System.getProperty("os.name")
                     + ") not supported");
@@ -567,7 +567,7 @@ public class GameUpdater implements Runnable
         while (entries.hasMoreElements())
         {
             final ZipEntry entry = entries.nextElement();
-            if (entry.isDirectory() || entry.getName().indexOf('/') != -1)
+            if(entry.isDirectory())
             {
                 continue;
             }
@@ -580,8 +580,13 @@ public class GameUpdater implements Runnable
         while (entries.hasMoreElements())
         {
             final ZipEntry entry = entries.nextElement();
-            if (entry.isDirectory() || entry.getName().indexOf('/') != -1)
+            if(entry.isDirectory())
             {
+                File dir = new File(path + entry.getName());
+                if(!dir.exists())
+                {
+                    dir.mkdirs();
+                }
                 continue;
             }
             

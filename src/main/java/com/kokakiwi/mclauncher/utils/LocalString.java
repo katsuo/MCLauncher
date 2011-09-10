@@ -28,7 +28,7 @@ public class LocalString
                     load(Utils.getResourceAsStream("lang/" + lang + ".yml")));
         }
         
-        lang = Locale.getDefault().toString();
+        lang = Locale.getDefault().toString(); //Ici on choppe la langue du système. Si on un fichier de langue qui correspond, on le prend. Sinon on laisse à en_US
         
         if (strings.get(lang) == null)
         {

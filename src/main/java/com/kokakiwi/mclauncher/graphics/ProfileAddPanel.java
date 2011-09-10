@@ -62,7 +62,8 @@ public class ProfileAddPanel extends JDialog
                             {
                                 case ADD:
                                     launcherFrame.profiles
-                                            .createProfile(profileName.getText());
+                                            .createProfile(profileName
+                                                    .getText());
                                     dialog.refreshList();
                                     break;
                                 

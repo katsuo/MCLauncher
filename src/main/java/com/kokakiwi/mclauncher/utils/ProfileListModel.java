@@ -5,7 +5,8 @@ import javax.swing.event.ListDataListener;
 
 import com.kokakiwi.mclauncher.LauncherFrame;
 
-public class ProfileListModel implements ListModel<Object>
+@SuppressWarnings("rawtypes")
+public class ProfileListModel implements ListModel
 {
     private final LauncherFrame launcherFrame;
     

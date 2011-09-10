@@ -14,6 +14,13 @@ French Readme Version
 Changelog
 =========
 
+v 0.9.5
+-----
+* Offline Mode dans les options
+* Bouton connexion, mettre "Connexion" au lieu de "Login" tout moche :P
+* Choix entre HTTP et HTTPS
+* Modifs de LePlayerFou
+
 v 0.1
 -----
 * First version.
@@ -23,7 +30,4 @@ v 0.1
 ToDo List
 =========
 
-* Add message localization
-* Add auto-connect to server or solo game
-* Add customisation based on XML (or other) files
-* Add Offline Mode
+* Choix du .jar à utiliser - Reporté à la 0.9.6

@@ -66,26 +66,39 @@ public class SystemUtils
     
     public enum OS
     {
-        windows("Windows", "win"), linux("Linux", "linux"), macosx("Mac OS",
-                "mac"), solaris("Solaris", "sunos", "solaris"), unknown;
+        windows("Windows", "\r\n", "win"), linux("Linux", "\n", "linux"), macosx(
+                "Mac OS", "\n", "mac"), solaris("Solaris", "\n", "sunos",
+                "solaris"), unknown;
         
         private final String   name;
         private final String[] labels;
+        private final String   lineSeparator;
         
         OS()
         {
             this("Unknown");
         }
         
-        OS(String name, String... strings)
+        OS(String name)
+        {
+            this(name, "\n");
+        }
+        
+        OS(String name, String lineSeparator, String... strings)
         {
             this.name = name;
+            this.lineSeparator = lineSeparator;
             labels = strings;
         }
         
         public String getName()
         {
             return name;
+        }
+        
+        public String getLineSeparator()
+        {
+            return lineSeparator;
         }
         
         public static OS getOSFromString(String name)

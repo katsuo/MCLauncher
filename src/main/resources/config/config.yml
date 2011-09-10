@@ -1,7 +1,9 @@
 launcher:
     windowTitle: 'Minecraft Launcher'
     browserHomeURL: 'http://mcupdate.tumblr.com/'
-    loginURL: 'https://login.minecraft.net/'
+    loginURLHTTP: 'https://login.minecraft.net/'
+    loginURLHTTPS: 'https://login.minecraft.net/'
+    httpsMode: true
     loginParameters: 'user={USERNAME}&password={PASSWORD}&version=13'
     offlineMode: false
     langs:

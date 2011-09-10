@@ -4,15 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -28,7 +23,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -67,7 +61,8 @@ public class LoginForm extends JPanel
     private final TransparentButton   offlineButton;
     private final TransparentLabel    statusText       = new TransparentLabel(
                                                                "", 0);
-    private final JPanel              southPanel       = new TexturedPanel("res/dirt.png");
+    private final JPanel              southPanel       = new TexturedPanel(
+                                                               "res/dirt.png");
     
     public LoginForm(LauncherFrame launcherFrame)
     {
@@ -241,7 +236,8 @@ public class LoginForm extends JPanel
                 scrollPane.setBorder(new MatteBorder(0, 0, 2, 0, Color.BLACK));
                 
                 new ClassesUtils.BrowserThread(editorPane, launcherFrame
-                        .getConfig().getString("launcher.browserHomeURL")).start();
+                        .getConfig().getString("launcher.browserHomeURL"))
+                        .start();
             }
             catch (final Exception e)
             {
@@ -249,7 +245,7 @@ public class LoginForm extends JPanel
             }
         }
         
-        JPanel panel = new TexturedPanel("res/stone.png");
+        final JPanel panel = new TexturedPanel("res/stone.png");
         panel.setLayout(new BorderLayout());
         panel.add(scrollPane, "Center");
         
@@ -331,6 +327,7 @@ public class LoginForm extends JPanel
         writeUsername();
     }
     
+    //Ceci est la fonction qui lit le fichier lastlogin ;)
     private void readUsername()
     {
         try

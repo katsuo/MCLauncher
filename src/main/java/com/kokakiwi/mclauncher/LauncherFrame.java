@@ -22,6 +22,7 @@ import com.kokakiwi.mclauncher.utils.LocalString;
 import com.kokakiwi.mclauncher.utils.MCLogger;
 import com.kokakiwi.mclauncher.utils.ProfileManager;
 import com.kokakiwi.mclauncher.utils.java.StringFormatter;
+import com.kokakiwi.mclauncher.utils.java.SystemUtils;
 import com.kokakiwi.mclauncher.utils.java.Utils;
 import com.kokakiwi.mclauncher.utils.java.Version;
 
@@ -29,7 +30,7 @@ public class LauncherFrame extends Frame
 {
     private static final long serialVersionUID = -439450888759860507L;
     
-    public static Version     APP_VERSION      = new Version(0, 9, 4);
+    public static Version     APP_VERSION      = new Version(0, 9, 5);
     
     public ProfileManager     profiles         = new ProfileManager();
     
@@ -41,8 +42,10 @@ public class LauncherFrame extends Frame
     public LauncherFrame()
     {
         super();
+        instance = this;
+        
         MCLogger.info("Starting MCLauncher [" + APP_VERSION + "]...");
-        MCLogger.setConfig(getConfig());
+        MCLogger.printSystemInfos();
         
         if (getConfig().getBoolean("launcher.autoConnectServer.connect"))
         {
@@ -52,12 +55,17 @@ public class LauncherFrame extends Frame
                     getConfig().getString("launcher.autoConnectServer.port"));
         }
         
-        MCLogger.printSystemInfos();
-        
         locale = new LocalString(this, getConfig().getStringList(
                 "launcher.langs"));
         
         setTitle(getConfig().getString("launcher.windowTitle"));
+        if (SystemUtils.getSystemOS() == SystemUtils.OS.macosx)
+        {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty(
+                    "com.apple.mrj.application.apple.menu.about.name",
+                    getConfig().getString("launcher.windowTitle"));
+        }
         setBackground(Color.BLACK);
         
         panel = new JPanel();
@@ -138,9 +146,18 @@ public class LauncherFrame extends Frame
                         URLEncoder.encode(new String(loginForm.getPassword())));
                 final String parameters = StringFormatter.format(getConfig()
                         .getString("launcher.loginParameters"), keys);
-                final String result = Utils.executePost(
-                        getConfig().getString("launcher.loginURL"), parameters,
+                
+                final String loginURL = getConfig().getBoolean(
+                        "launcher.httpsMode") ? getConfig().getString(
+                        "launcher.loginURLHTTPS") : getConfig().getString(
+                        "launcher.loginURLHTTP");
+                        
+                MCLogger.debug("Logging in using URL '" + loginURL + "'");
+                
+                final String result = Utils.executePost(loginURL, parameters,
                         getConfig().getString("updater.keyFileName"));
+                
+                MCLogger.debug("Result: " + result);
                 if (result == null)
                 {
                     loginForm.askOfflineMode();
@@ -171,6 +188,8 @@ public class LauncherFrame extends Frame
                 getConfig().set("downloadTicket", values[1].trim());
                 getConfig().set("userName", values[2].trim());
                 getConfig().set("sessionID", values[3].trim());
+                MCLogger.info("Login successful.");
+                MCLogger.debug("Session ID: " + values[3].trim());
                 loginForm.loginOk();
                 
                 runGame();
@@ -187,6 +206,7 @@ public class LauncherFrame extends Frame
     {
         getConfig().set("latestVersion", "-1");
         getConfig().set("userName", loginForm.getUserName());
+        getConfig().set("sessionID", "12345");
         loginForm.loginOk();
         runGame();
     }
@@ -240,6 +260,13 @@ public class LauncherFrame extends Frame
         locale = new LocalString(this, getConfig().getStringList(
                 "launcher.langs"));
         setTitle(getConfig().getString("launcher.windowTitle"));
+    }
+    
+    private static LauncherFrame instance;
+    
+    public static LauncherFrame getInstance()
+    {
+        return instance;
     }
     
     public static void main(String[] args)

@@ -277,7 +277,7 @@ public class Launcher extends Applet implements Runnable, AppletStub,
             g.setColor(Color.LIGHT_GRAY);
             String msg = launcherFrame.locale
                     .getString("updater.newUpdateAvailable");
-            if(updater.latestVersionToUpdate != null)
+            if (updater.latestVersionToUpdate != null)
             {
                 msg += " : " + updater.latestVersionToUpdate;
             }

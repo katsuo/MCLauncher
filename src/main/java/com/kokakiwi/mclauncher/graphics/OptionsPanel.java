@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.net.URL;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -76,6 +77,7 @@ public class OptionsPanel extends JDialog
         optionsPanel.add(labelPanel, "West");
         optionsPanel.add(fieldPanel, "Center");
         
+        //FORCE UPDATE
         final JButton forceButton = new JButton(
                 launcherFrame.locale.getString("options.forceUpdate"));
         if (launcherFrame.getConfig().getString("force-update") != null)
@@ -88,8 +90,69 @@ public class OptionsPanel extends JDialog
         labelPanel.add(new JLabel(launcherFrame.locale
                 .getString("options.forceUpdateLabel") + ": ", 4));
         fieldPanel.add(forceButton);
+        
+        //OFFLINE MODE
+        labelPanel.add(new JLabel(launcherFrame.locale.getString("options.offlineMode")));
+        final JCheckBox offlineModeToggle = new JCheckBox(launcherFrame.locale.getString("options.onlineMode"));
+        final boolean offlineMode = launcherFrame.getConfig().getBoolean("launcher.offlineMode");
+        if(offlineMode)
+        {
+            offlineModeToggle.setSelected(true);
+            offlineModeToggle.setText(launcherFrame.locale.getString("options.offlineMode"));
+        }
+        offlineModeToggle.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e)
+            {
+                if(offlineModeToggle.isSelected())
+                {
+                    offlineModeToggle.setText(launcherFrame.locale.getString("options.offlineMode"));
+                    launcherFrame.getConfig().set("launcher.offlineMode", true);
+                }
+                else
+                {
+                    offlineModeToggle.setText(launcherFrame.locale.getString("options.onlineMode"));
+                    launcherFrame.getConfig().set("launcher.offlineMode", false);
+                }
+            }
+        });
+        fieldPanel.add(offlineModeToggle);
+        
+        //HTTP MODE
+        final boolean httpsMode = launcherFrame.getConfig().getBoolean("launcher.httpsMode");
+        final JCheckBox httpsModeToggle = new JCheckBox();
+        if(httpsMode)
+        {
+            labelPanel.add(new JLabel(launcherFrame.locale.getString("options.httpsMode")));
+            httpsModeToggle.setText(launcherFrame.locale.getString("options.httpsMode"));
+            httpsModeToggle.setSelected(true);
+        }
+        else
+        {
+            labelPanel.add(new JLabel(launcherFrame.locale.getString("options.httpMode")));
+            httpsModeToggle.setText(launcherFrame.locale.getString("options.httpMode"));
+        }
+        httpsModeToggle.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent arg0)
+            {
+                if(httpsModeToggle.isSelected())
+                {
+                    httpsModeToggle.setText(launcherFrame.locale.getString("options.httpsMode"));
+                    launcherFrame.getConfig().set("launcher.httpsMode", true);
+                }
+                else
+                {
+                    httpsModeToggle.setText(launcherFrame.locale.getString("options.httpMode"));
+                    launcherFrame.getConfig().set("launcher.httpsMode", false);
+                }
+            }
+        });
+        fieldPanel.add(httpsModeToggle);
+        
+        //PROFILS
         labelPanel.add(new JLabel(launcherFrame.locale
-                .getString("options.profiles") + ":", 4));
+                .getString("options.profiles") + ":"));
         final JButton profilesButton = new JButton(
                 launcherFrame.locale.getString("options.profiles"));
         profilesButton.addActionListener(new ActionListener() {
@@ -101,8 +164,9 @@ public class OptionsPanel extends JDialog
         });
         fieldPanel.add(profilesButton);
         
+        //GAME LOCATION
         labelPanel.add(new JLabel(launcherFrame.locale
-                .getString("options.gameLocationLabel") + ": ", 4));
+                .getString("options.gameLocationLabel") + ": "));
         final TransparentLabel dirLink = new TransparentLabel(Utils
                 .getWorkingDirectory(launcherFrame).toString()) {
             private static final long serialVersionUID = 0L;

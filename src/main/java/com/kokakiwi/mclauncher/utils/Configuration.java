@@ -117,7 +117,7 @@ public class Configuration
     
     public void set(String name, Object value)
     {
-        config.put(name.toLowerCase(), value);
+        config.put(name, value);
     }
     
     public String getString(String name)
@@ -156,37 +156,48 @@ public class Configuration
     @SuppressWarnings("unchecked")
     public Object get(String nodeName)
     {
-        if (nodeName.contains("."))
+        Object result = null;
+        
+        if(config.containsKey(nodeName))
         {
-            final String[] nodes = nodeName.split("\\.");
-            Object currentNode = null;
-            
-            for (final String node : nodes)
-            {
-                if (currentNode == null)
-                {
-                    currentNode = config.get(node);
-                }
-                else
-                {
-                    if (currentNode instanceof Map)
-                    {
-                        currentNode = ((Map<String, Object>) currentNode)
-                                .get(node);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-            
-            return currentNode;
+            result = config.get(nodeName);
         }
         else
         {
-            return config.get(nodeName.toLowerCase());
+            if (nodeName.contains("."))
+            {
+                final String[] nodes = nodeName.split("\\.");
+                Object currentNode = null;
+                
+                for (final String node : nodes)
+                {
+                    if (currentNode == null)
+                    {
+                        currentNode = config.get(node);
+                    }
+                    else
+                    {
+                        if (currentNode instanceof Map)
+                        {
+                            currentNode = ((Map<String, Object>) currentNode)
+                                    .get(node);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+                
+                result = currentNode;
+            }
+            else
+            {
+                result = config.get(nodeName);
+            }
         }
+        
+        return result;
     }
     
     public Map<String, Object> getConfig()

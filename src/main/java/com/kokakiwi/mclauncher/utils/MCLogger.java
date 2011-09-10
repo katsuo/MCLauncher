@@ -10,19 +10,19 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import com.kokakiwi.mclauncher.utils.java.SystemUtils;
+import com.kokakiwi.mclauncher.utils.java.SystemUtils.OS;
+import com.kokakiwi.mclauncher.utils.java.Utils;
 
 public class MCLogger
 {
-    private static Configuration config;
-    
-    // private static Logger global = Logger.getGlobal();
     private static Logger        logger = Logger.getLogger("MCLauncher");
+    private static String        logDir = Utils.getWorkingDirectory("minecraft", null).getAbsolutePath() + "/";
     
     static
     {
         try
         {
-            final FileHandler fh = new FileHandler("mclauncher.log");
+            final FileHandler fh = new FileHandler(logDir + "mclauncher.log");
             fh.setFormatter(new MCFormatter());
             final ConsoleHandler ch = new ConsoleHandler();
             ch.setFormatter(new MCFormatter());
@@ -54,43 +54,46 @@ public class MCLogger
     
     public static void debug(String message)
     {
-        if (System.getenv("debugMode") != null
-                || config.getBoolean("launcher.debugMode"))
-        {
-            logger.log(new Debug(), message);
-        }
+        logger.log(new Debug(), message);
     }
     
     public static void printSystemInfos()
     {
-        Map<String, String> infos = new HashMap<String, String>();
-        infos.put("OS Name", System.getProperty("os.name") + " (" + SystemUtils.getSystemOS().getName() + ")");
-        infos.put("OS Arch", System.getProperty("os.arch") + " (" + SystemUtils.getSystemArch() + ")");
+        final OS os = SystemUtils.getSystemOS();
+        
+        final Map<String, String> infos = new HashMap<String, String>();
+        infos.put("OS Name", System.getProperty("os.name") + " ("
+                + SystemUtils.getSystemOS().getName() + ")");
+        infos.put(
+                "OS Arch",
+                System.getProperty("os.arch") + " ("
+                        + SystemUtils.getSystemArch() + ")");
         infos.put("Java version", System.getProperty("java.version"));
         infos.put("Java API Version", System.getProperty("java.class.version"));
         infos.put("Launcher path", SystemUtils.getExecDirectoryPath());
+        infos.put("LogFile and profiles directory", logDir);
         
         final StringBuffer sb = new StringBuffer();
         sb.append("System informations:");
-        sb.append(System.lineSeparator());
-        for(String key : infos.keySet())
+        sb.append(os.getLineSeparator());
+        for (final String key : infos.keySet())
         {
-            String value = infos.get(key);
+            final String value = infos.get(key);
             sb.append("\t");
             sb.append(key);
             sb.append(" : ");
             sb.append(value);
-            sb.append(System.lineSeparator());
+            sb.append(os.getLineSeparator());
         }
         
         debug(sb.toString());
     }
     
-    public static void setConfig(Configuration config)
+    public static String getLogDir()
     {
-        MCLogger.config = config;
+        return logDir;
     }
-    
+
     public static class MCFormatter extends Formatter
     {
         

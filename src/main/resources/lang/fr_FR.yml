@@ -5,7 +5,7 @@ launcher:
   loadBrowser: "Chargement de la page des mises a jour"
 login:
   rememberBox: "Se souvenir du mot de passe"
-  launchButton: "Login"
+  launchButton: "Connexion"
   optionsButton: "Options"
   retryButton: "Re-essayer"
   offlineButton: "Jouer hors-ligne"
@@ -19,6 +19,14 @@ options:
   gameLocationLabel: "Repertoire d'installation"
   profiles : "Profils"
   done: "Fini"
+  offlineMode: "Mode Hors-Ligne"
+  onlineMode: "Mode En-Ligne"
+  httpMode: "Connexion par HTTP"
+  httpsMode: "Connexion par HTTPS"
+profiles:
+  add: "Ajouter"
+  edit: "Editer"
+  remove: "Supprimer"
 updater:
   retrieving: "Telecharge"
   extracting: "Extrait"

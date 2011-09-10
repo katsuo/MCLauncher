@@ -9,22 +9,27 @@ import com.kokakiwi.mclauncher.utils.java.Utils;
 
 public class ProfileManager
 {
-    private final Map<String, Profile> profiles       = new HashMap<String, Profile>();
-    private String                     currentProfile = "default";
+    private final Map<String, Profile> profiles          = new HashMap<String, Profile>();
+    private String                     currentProfile    = "default";
+    private final String               profilesParentDir = Utils.getWorkingDirectory("minecraft", null).getAbsolutePath() + "/"; //On règle le launcher pour qu'il aille chercher les profils
     
     public ProfileManager()
     {
-        final File defaultProfileDir = new File("profiles/default");
+        MCLogger.debug("Load profiles");
+        final File defaultProfileDir = new File(profilesParentDir
+                + "profiles/default");
         if (!defaultProfileDir.exists())
         {
+            MCLogger.debug("Create default profile");
             defaultProfileDir.mkdirs();
             createProfile("Default");
         }
         
-        final File profilesDir = new File("profiles");
+        final File profilesDir = new File(profilesParentDir + "profiles");
         final String[] profDir = profilesDir.list();
         for (final String dir : profDir)
         {
+            MCLogger.info("Load profile with ID '" + dir + "'");
             final File profileDir = new File(profilesDir, dir);
             if (profileDir.isDirectory())
             {
@@ -61,19 +66,19 @@ public class ProfileManager
     
     public void deleteProfile(String id)
     {
-        File profileDir = new File("profiles/" + id);
+        final File profileDir = new File(profilesParentDir + "profiles/" + id);
         deleteDirectory(profileDir);
         profiles.remove(id);
     }
     
     public void deleteDirectory(File dir)
     {
-        if(dir.isDirectory())
+        if (dir.isDirectory())
         {
-            for(String sub : dir.list())
+            for (final String sub : dir.list())
             {
-                File subElement = new File(dir, sub);
-                if(subElement.isDirectory())
+                final File subElement = new File(dir, sub);
+                if (subElement.isDirectory())
                 {
                     deleteDirectory(subElement);
                 }
@@ -140,7 +145,8 @@ public class ProfileManager
             this.name = name;
             id = name.toLowerCase().trim();
             loadConfig();
-            final File descFile = new File("profiles/" + id + "/profile.yml");
+            final File descFile = new File(profilesParentDir + "profiles/" + id
+                    + "/profile.yml");
             if (!descFile.exists())
             {
                 try
@@ -160,7 +166,8 @@ public class ProfileManager
         public void loadConfig()
         {
             config.load(Utils.getResourceAsStream("config/config.yml"), "yaml");
-            final File confFile = new File("profiles/" + id + "/config.yml");
+            final File confFile = new File(profilesParentDir + "profiles/" + id
+                    + "/config.yml");
             if (!confFile.exists())
             {
                 try
@@ -173,7 +180,11 @@ public class ProfileManager
                     MCLogger.info(e.getLocalizedMessage());
                 }
             }
-            config.load(confFile);
+            
+            if(System.getenv("debugMode") == null)
+            {
+                config.load(confFile);
+            }
         }
         
         public void initDescriptor()
@@ -184,14 +195,16 @@ public class ProfileManager
         
         public void save() throws Exception
         {
-            final File confFile = new File("profiles/" + id + "/config.yml");
+            final File confFile = new File(profilesParentDir + "profiles/" + id
+                    + "/config.yml");
             config.save(confFile);
             saveDescriptor();
         }
         
         public void saveDescriptor() throws Exception
         {
-            final File descFile = new File("profiles/" + id + "/profile.yml");
+            final File descFile = new File(profilesParentDir + "profiles/" + id
+                    + "/profile.yml");
             descriptor.save(descFile);
         }
         
