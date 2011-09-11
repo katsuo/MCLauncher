@@ -1,6 +1,7 @@
 package com.kokakiwi.mclauncher.utils.java;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class StringFormatter
 {
@@ -10,8 +11,17 @@ public class StringFormatter
         for (final String key : keys.keySet())
         {
             final String value = keys.get(key);
-            finalString = finalString.replaceAll("\\{" + key.toUpperCase()
-                    + "\\}", value);
+            
+            if(value != null)
+            {
+                finalString = finalString.replaceAll("\\[(.*)\\{" + key.toUpperCase() + "\\}(.*)\\]", "$1{" + key.toUpperCase() + "}$2");
+                finalString = finalString.replaceAll("\\{" + key.toUpperCase()
+                        + "\\}", value);
+            }
+            else
+            {
+                finalString = finalString.replaceAll("\\[(.*)\\{" + key.toUpperCase() + "\\}(.*)\\]", "");
+            }
         }
         return finalString;
     }

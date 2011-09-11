@@ -31,3 +31,5 @@ ToDo List
 =========
 
 * Choix du .jar à utiliser - Reporté à la 0.9.6
+* Interface de login à relooker, à cisailler, à torturer, à chirugiquer.
+* Régler le problème avec Spout. Cela inclue peut-être le fait de tout recoder le launcher :(

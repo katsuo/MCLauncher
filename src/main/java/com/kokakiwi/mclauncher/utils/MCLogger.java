@@ -16,7 +16,7 @@ import com.kokakiwi.mclauncher.utils.java.Utils;
 public class MCLogger
 {
     private static Logger        logger = Logger.getLogger("MCLauncher");
-    private static String        logDir = Utils.getWorkingDirectory("minecraft", null).getAbsolutePath() + "/";
+    private static String        logDir = Utils.getWorkingDirectory("minecraft", null, false).getAbsolutePath() + "/";
     
     static
     {

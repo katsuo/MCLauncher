@@ -45,11 +45,32 @@ public class LocalString
     
     public String getString(String node)
     {
+        return getString(node, new HashMap<String, String>());
+    }
+    
+    public String getString(String node, String[][] params)
+    {
+        Map<String, String> custom = new HashMap<String, String>();
+        
+        for(String[] str : params)
+        {
+            custom.put(str[0], str[1]);
+        }
+        
+        return getString(node, custom);
+    }
+    
+    public String getString(String node, Map<String, String> customsParams)
+    {
         String nodeValue = (String) get(node);
         
         final Map<String, String> params = new HashMap<String, String>();
         params.put("GAMENAME",
                 launcherFrame.getConfig().getString("gameLauncher.gameName"));
+        if(customsParams != null)
+        {
+            params.putAll(customsParams);
+        }
         
         nodeValue = StringFormatter.format(nodeValue, params);
         

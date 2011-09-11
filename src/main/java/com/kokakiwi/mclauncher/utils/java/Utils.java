@@ -33,10 +33,10 @@ public class Utils
         return getWorkingDirectory(
                 launcherFrame.getConfig().getString("updater.folderName"),
                 launcherFrame.getConfig().getBoolean("updater.customGameDir") ? launcherFrame
-                        .getConfig().getString("updater.gameDir") : null);
+                        .getConfig().getString("updater.gameDir") : null, true);
     }
     
-    public static File getWorkingDirectory(String applicationName, String local)
+    public static File getWorkingDirectory(String applicationName, String local, boolean saveLastDir)
     {
         if (workDir != null)
         {
@@ -86,9 +86,13 @@ public class Utils
                     "The working directory could not be created: "
                             + workingDirectory);
         }
-        workDir = workingDirectory;
         
-        return workDir;
+        if(saveLastDir)
+        {
+            workDir = workingDirectory;
+        }
+        
+        return workingDirectory;
     }
     
     public static DownloadThread download(URL url, File target)

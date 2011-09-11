@@ -32,7 +32,7 @@ updater:
   extracting: "Extracting"
   extractTo: "to"
   title: "Updating {GAMENAME}"
-  newUpdateAvailable: "New update available"
+  newUpdateAvailable: "New update available[ : {NEWVERSION}]"
   askUpdate: "Would you like to update?"
   states:
     INIT: "Initializing loader"

@@ -276,11 +276,7 @@ public class Launcher extends Applet implements Runnable, AppletStub,
             }
             g.setColor(Color.LIGHT_GRAY);
             String msg = launcherFrame.locale
-                    .getString("updater.newUpdateAvailable");
-            if (updater.latestVersionToUpdate != null)
-            {
-                msg += " : " + updater.latestVersionToUpdate;
-            }
+                    .getString("updater.newUpdateAvailable", new String[][]{{"NEWVERSION", updater.latestVersionToUpdate}});
             g.setFont(new Font(null, 1, 20));
             FontMetrics fm = g.getFontMetrics();
             g.drawString(msg, w / 2 - fm.stringWidth(msg) / 2,

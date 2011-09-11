@@ -4,6 +4,8 @@ import java.applet.Applet;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import com.kokakiwi.mclauncher.LauncherFrame;
 import com.kokakiwi.mclauncher.utils.MCLogger;
@@ -15,6 +17,8 @@ public class Wrapper
     private final ClassLoader   classLoader;
     
     private Applet              applet;
+    
+    private Executor worker = Executors.newCachedThreadPool();
     
     public Wrapper(LauncherFrame launcherFrame)
     {
@@ -80,5 +84,41 @@ public class Wrapper
     public Applet getApplet()
     {
         return applet;
+    }
+    
+    public void launchCleaner()
+    {
+        worker.execute(new MinecraftCleaner());
+    }
+    
+    private class MinecraftCleaner implements Runnable
+    {
+        private boolean running = false;
+        
+        public void run()
+        {
+            running = true;
+            
+            while(running)
+            {
+                if(!applet.isActive())
+                {
+                    applet.removeAll();
+                    applet.stop();
+                    applet.destroy();
+                    System.exit(0);
+                }
+                
+                try
+                {
+                    Thread.sleep(1000L);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
     }
 }

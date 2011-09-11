@@ -11,7 +11,7 @@ public class ProfileManager
 {
     private final Map<String, Profile> profiles          = new HashMap<String, Profile>();
     private String                     currentProfile    = "default";
-    private final String               profilesParentDir = Utils.getWorkingDirectory("minecraft", null).getAbsolutePath() + "/"; //On règle le launcher pour qu'il aille chercher les profils
+    private final String               profilesParentDir = Utils.getWorkingDirectory("minecraft", null, false).getAbsolutePath() + "/"; //On règle le launcher pour qu'il aille chercher les profils
     
     public ProfileManager()
     {
