@@ -5,7 +5,7 @@ launcher:
     loginURLHTTPS: 'https://login.minecraft.net/'                                             # URL de login HTTPS
     httpsMode: true                                                                           # Utiliser HTTPS?
     loginParameters: 'user={USERNAME}&password={PASSWORD}&version=13'                         # Ne pas toucher, ce sont les parametres mis dans la requete de login
-    offlineMode: true                                                                        # Mode Hors-Ligne
+    offlineMode: false                                                                        # Mode Hors-Ligne
     langs:                                                                                    # Fichiers de langues, en ajouter si vous avez les fichiers
         - 'en_US'
     debugMode: true                                                                           # Mode debug. Ne sert a rien.
