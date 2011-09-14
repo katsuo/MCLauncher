@@ -8,6 +8,7 @@ launcher:
     offlineMode: false                                                                        # Mode Hors-Ligne
     langs:                                                                                    # Fichiers de langues, en ajouter si vous avez les fichiers
         - 'en_US'
+        - 'fr_FR'
     debugMode: true                                                                           # Mode debug. Ne sert a rien.
     autoConnectServer:
         connect: false                                                                        # Se connecter automatiquement a un serveur ou non.
@@ -16,8 +17,8 @@ launcher:
 updater:
     askUpdateIfAvailable: true                                                                # Demander quand une MaJ est disponible
     updateIfNewVersionAvailable: true                                                         # Mettre a jour lorsque une MaJ est disponible
-    customGameDir: true                                                                      # Utiliser un dossier perso
-    gameDir: 'mcp_data'                                                                               # Chemin vers le dossier perso
+    customGameDir: false                                                                      # Utiliser un dossier perso
+    gameDir: ''                                                                               # Chemin vers le dossier perso
     folderName: 'minecraft'                                                                   # Nom du dossier contenant Minecraft
     keyFileName: 'minecraft.key'                                                              # Nom du fichier contenant la cle pour la connexion en HTTPS
     loginFileEncryptionKey: 'passwordfile'                                                    # Nom du fichier contenant les informations de derniere connexion (Lorsque 'Se souvenir de moi' est coche)

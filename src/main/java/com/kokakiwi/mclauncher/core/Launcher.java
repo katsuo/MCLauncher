@@ -80,21 +80,21 @@ public class Launcher extends Applet implements Runnable, AppletStub,
                     launcherFrame.getConfig().getString("port"));
         }
         
-        if (launcherFrame.getConfig().getString("latestversion") != null)
+        if (launcherFrame.getConfig().getString("latestVersion") != null)
         {
             customParameters.put("latestVersion", launcherFrame.getConfig()
                     .getString("latestVersion"));
         }
         
-        if (launcherFrame.getConfig().getString("downloadticket") != null)
+        if (launcherFrame.getConfig().getString("downloadTicket") != null)
         {
             customParameters.put("downloadTicket", launcherFrame.getConfig()
                     .getString("downloadTicket"));
         }
         
-        if (launcherFrame.getConfig().getString("sessionid") != null)
+        if (launcherFrame.getConfig().getString("sessionID") != null)
         {
-            customParameters.put("sessionID", launcherFrame.getConfig()
+            customParameters.put("sessionid", launcherFrame.getConfig()
                     .getString("sessionID"));
         }
         
@@ -102,6 +102,9 @@ public class Launcher extends Applet implements Runnable, AppletStub,
                 .put("username", launcherFrame.getConfig()
                         .getString("userName") == null ? "Player"
                         : launcherFrame.getConfig().getString("userName"));
+        
+        System.out.println(launcherFrame.getConfig().get("sessionID"));
+        System.out.println(customParameters.get("sessionID"));
         
         // this.customParameters.put("stand-alone", "true");
         
@@ -373,26 +376,24 @@ public class Launcher extends Applet implements Runnable, AppletStub,
     public String getParameter(String name)
     {
         String custom = customParameters.get(name);
-        if (custom != null)
+        if (custom == null)
         {
-            return custom;
+            custom = launcherFrame.getConfig().getString(name);
+            if(custom == null)
+            {
+                try
+                {
+                    custom = super.getParameter(name);
+                }
+                catch (final Exception e)
+                {
+                    customParameters.put(name, null);
+                }
+            }
         }
         
-        custom = launcherFrame.getConfig().getString(name);
-        if (custom != null)
-        {
-            return custom;
-        }
-        
-        try
-        {
-            return super.getParameter(name);
-        }
-        catch (final Exception e)
-        {
-            customParameters.put(name, null);
-        }
-        return null;
+        MCLogger.debug("Asked '" + name + "' parameter = '" + custom + "'");
+        return custom;
     }
     
     @Override

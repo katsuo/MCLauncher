@@ -30,7 +30,7 @@ public class LauncherFrame extends Frame
 {
     private static final long serialVersionUID = -439450888759860507L;
     
-    public static Version     APP_VERSION      = new Version(0, 9, 5);
+    public static Version     APP_VERSION      = new Version(0, 9, 5, 1);
     
     public ProfileManager     profiles         = new ProfileManager();
     
@@ -206,7 +206,7 @@ public class LauncherFrame extends Frame
     {
         getConfig().set("latestVersion", "-1");
         getConfig().set("userName", loginForm.getUserName());
-        getConfig().set("sessionID", "12345");
+        getConfig().set("sessionID", "43546534723277");
         loginForm.loginOk();
         runGame();
     }

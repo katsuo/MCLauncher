@@ -130,13 +130,11 @@ public class GameLauncher implements Runnable
         if (wrapper.createApplet())
         {
             MCLogger.info("Start game.");
-            launcher.replace(wrapper.getApplet());
             
-            wrapper.launchCleaner();
-            /*if (System.getenv("debugMode") == null)
+            if (System.getenv("debugMode") == null || true)
             {
                 launcher.replace(wrapper.getApplet());
-            }*/
+            }
         }
     }
     

@@ -85,40 +85,4 @@ public class Wrapper
     {
         return applet;
     }
-    
-    public void launchCleaner()
-    {
-        worker.execute(new MinecraftCleaner());
-    }
-    
-    private class MinecraftCleaner implements Runnable
-    {
-        private boolean running = false;
-        
-        public void run()
-        {
-            running = true;
-            
-            while(running)
-            {
-                if(!applet.isActive())
-                {
-                    applet.removeAll();
-                    applet.stop();
-                    applet.destroy();
-                    System.exit(0);
-                }
-                
-                try
-                {
-                    Thread.sleep(1000L);
-                }
-                catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        
-    }
 }

@@ -14,6 +14,10 @@ French Readme Version
 Changelog
 =========
 
+v 1.0.0
+-----
+* Refonte TOTALE
+
 v 0.9.5
 -----
 * Offline Mode dans les options
